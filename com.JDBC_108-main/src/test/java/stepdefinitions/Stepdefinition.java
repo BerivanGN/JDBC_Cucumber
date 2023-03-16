@@ -3,11 +3,15 @@ package stepdefinitions;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.junit.Assert;
+import utilities.DBUtils;
 
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
+import static utilities.DBUtils.*;
 
 
 public class Stepdefinition {
@@ -36,6 +40,8 @@ public class Stepdefinition {
         Connection connection;
         Statement statement;
         ResultSet resultset;
+        List<Object> staffID = new ArrayList<>();
+        List<Object> adresList = new ArrayList<>();
 
 
         @Given("Database ile iletisimi baslat")
@@ -96,6 +102,76 @@ public class Stepdefinition {
         public void database_kapatilir() throws SQLException {
                 connection.close();
         }
+        //-------------------------------------------------------------
+
+        @Given("Database baglantisi kurulur")
+        public void database_baglantisi_kurulur() {
+             createConnection();
+        }
+        @Given("staff tablosundaki {string} leri listelenir")
+        public void staff_tablosundaki_leri_listelenir(String id) {
+                staffID = getColumnData("SELECT * FROM u480337000_tlb_training.staff",id);
+                System.out.println(staffID);
+        }
+        @Given("Verilen {string} dogrulanir")
+        public void verilen_dogrulanir(String verilenId) {
+                assertTrue(staffID.toString().contains(verilenId));
+        }
+        @Given("Database baglantisi kapatilir")
+        public void database_baglantisi_kapatilir() {
+                closeConnection();
+        }
+
+        //=======================================================================
+
+        @Given("{string} degeri verilen customerin {string} guncellenir")
+        public void degeri_verilen_customerin_guncellenir(String id, String adres) throws SQLException {
+
+                String query = "UPDATE u480337000_tlb_training.customer_addresses\n" +
+                       "SET address='"+adres+"'WHERE id="+id;
+
+               /*
+                  UPDATE u480337000_tlb_training.customer_addresses
+                  SET address='kadikoy'WHERE id=1
+                */
+
+                System.out.println(query);
+
+                update(query);
+
+        }
+        @Given("customer address tablosundaki {string} bilgileri listelenir")
+        public void customer_address_tablosundaki_bilgileri_listelenir(String columnName) {
+
+                String query = "String query= \"SELECT * FROM u480337000_tlb_training.customer_addresses;";
+                adresList = getColumnData(query, columnName);
+                System.out.println(adresList);
+        }
+        @Given("customer {string} guncellendigi dogrulanir")
+        public void customer_guncellendigi_dogrulanir(String guncellenenAdres) {
+                assertTrue(adresList.toString().contains(guncellenenAdres));
+        }
+
+        // =========================================================
+
+        @Given("Verilen datalar ile query hazırlanip sorgu gerceklerstirilir")
+        public void verilen_datalar_ile_query_hazırlanip_sorgu_gerceklerstirilir() throws SQLException {
+                String query = "SELECT email FROM u480337000_tlb_training.users WHERE first_name='admin' and last_name='user';";
+                resultset = getStatement().executeQuery(query);
+        }
+        @Given("Donen Result set datasi dogrulanir")
+        public void donen_result_set_datasi_dogrulanir() throws SQLException {
+
+                String actualEmailData=resultset.
+                        getString("email");
+
+                String expectedEmailData= "admin@gmail.com";
+                assertEquals(expectedEmailData,actualEmailData);
+
+        }
+
+
+
 
 
 }

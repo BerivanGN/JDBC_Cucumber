@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="3.336">
-    <testcase classname="JDBC uzerinden Databse baglantisi kurularak ilk test" name="Users tablosundan isimler testi." time="2.85">
-        <system-out>
-            <![CDATA[Given Database ile iletisimi baslat.........................................passed
-Then Query statement araciligi ile database gonderilir......................passed
-Then Databaseden donen resulset verisi test edilir..........................passed
-And Database kapatilir......................................................passed
+<testsuite errors="0" failures="1" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="3.369">
+    <testcase classname="User datalarini test etme" name="Verilen datalar ile user bilgilerini dogrulama" time="2.952">
+        <failure message="Before start of result set" type="java.sql.SQLException">
+            <![CDATA[* Database baglantisi kurulur...............................................passed
+* Verilen datalar ile query hazırlanip sorgu gerceklerstirilir..............passed
+* Donen Result set datasi dogrulanir........................................failed
+* Database baglantisi kapatilir.............................................skipped
+
+StackTrace:
+java.sql.SQLException: Before start of result set
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:129)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:97)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:89)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:63)
+	at com.mysql.cj.jdbc.result.ResultSetImpl.checkRowPos(ResultSetImpl.java:532)
+	at com.mysql.cj.jdbc.result.ResultSetImpl.getString(ResultSetImpl.java:878)
+	at com.mysql.cj.jdbc.result.ResultSetImpl.getString(ResultSetImpl.java:896)
+	at stepdefinitions.Stepdefinition.donen_result_set_datasi_dogrulanir(Stepdefinition.java:165)
+	at ✽.Donen Result set datasi dogrulanir(file:///C:/Users/metaverseelektronik/Desktop/GitHubTeam108/com.JDBC_108-main/com.JDBC_108-main/./src/test/Resources/JDBC04_UserDataAssertion.feature:14)
 ]]>
-        </system-out>
+        </failure>
     </testcase>
 </testsuite>
